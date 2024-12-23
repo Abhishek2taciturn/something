@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christmas Memories with [Friend's Name]</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Pacifico', cursive, sans-serif;
+      background: linear-gradient(135deg, #ff7c8a, #f9d187); /* Vibrant pink and yellow gradient */
+      overflow-x: hidden;
+      color: #4f4f4f;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Intro Screen */
+    #introScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 1s ease-out;
+    }
+
+    #introScreen video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensure video covers the full screen */
+      z-index: -1;
+    }
+
+    #introScreen img {
+  width: 100%;  /* Set the width to 70% of the parent container */
+  height: 70%;  /* Maintain the aspect ratio */
+  object-fit: contain;  /* Ensure the image scales without being cropped */
+  border-radius: 10px;
+}
+    #introScreen h1 {
+      font-size: 3rem;
+      color: #ff4270;
+      margin-top: 20px;
+      font-family: 'Pacifico', cursive;
+    }
+
+    #introScreen button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: #ff63a2;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    #introScreen button:hover {
+      background-color: #ff4270;
+    }
+
+    /* Snowflakes Animation */
+    .snowflakes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .snowflake {
+      position: absolute;
+      font-size: 2rem;
+      animation: snow 5s linear infinite;
+    }
+    @keyframes snow {
+      0% { top: -10px; opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    /* Section Styles */
+    .section {
+      background: linear-gradient(135deg, #ffebf4, #e6d1ff); /* Soft gradient background */
+      border-radius: 25px;
+      padding: 40px;
+      width: 100%;
+      height: 100vh; /* Full screen height */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 1s ease-out;
+      flex-direction: column;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .section .content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #ff4e72; /* Deep vibrant pink for subheadings */
+    }
+
+    /* Image and Message Section */
+    .image-message-section {
+      display: flex;
+      justify-content: space-between; /* Space the image and message apart */
+      align-items: center;
+      height: 100vh; /* Full screen height */
+      width: 100%;
+      background: linear-gradient(135deg, #ffebf4, #e6d1ff); /* Soft gradient background */
+      border-radius: 25px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      margin: 0;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 1s ease-out;
+    }
+
+    .image-message-section.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .image-message-section img {
+      width: 45%; /* Adjust the image size */
+      max-height: 80%; /* Prevents the image from exceeding the container's height */
+      object-fit: cover; /* Ensures image covers the space without distortion */
+      border-radius: 10px;
+    }
+
+    .image-message-section .message {
+      width: 45%; /* Adjust message width */
+      padding: 20px;
+      text-align: left;
+    }
+
+    .image-message-section .message h2 {
+      font-size: 2rem;
+      color: #ff4e72; /* Deep vibrant pink */
+    }
+
+    .image-message-section .message p {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    /* Button Styles */
+    button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: #ff63a2; /* Bright pink */
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #ff4270; /* Darker pink on hover */
+      transform: rotate(5deg) scale(1.1); /* Shake effect on hover */
+    }
+    #message .content {
+  display: flex;
+  justify-content: space-between; /* Space between the image and text */
+  align-items: center;
+  padding: 20px;
+}
+
+#message .message-text {
+  width: 45%; /* Text takes up 45% of the container */
+}
+
+#message .message-image {
+  width: 45%; /* Image takes up 45% of the container */
+}
+
+#message .message-image img {
+  width: 150%;  /* Image takes up the full width of its container */
+  height: auto;  /* Maintain the aspect ratio */
+  object-fit: contain;  /* Ensure the image fits properly */
+  border-radius: 10px;  /* Optional: Rounded corners */
+}
+
+
+
+    /* Slideshow Section Styles */
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Hide images that are not in view */
+}
+
+.carousel-images {
+  display: flex;
+  transition: transform 0.5s ease-in-out; /* Smooth slide transition */
+}
+
+.carousel-images img {
+  width: 100%;
+  height: 100%; /* Make sure images take full width */
+  object-fit: cover; /* Ensure images fit the container */
+}
+
+button.prev,
+button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+button.prev {
+  left: 10px;
+}
+
+button.next {
+  right: 10px;
+}
+/* Special Message Section */
+#special-message {
+  background: linear-gradient(135deg, #ffb3e6, #ffe6cc); /* Soft pink to warm yellow gradient */
+  padding: 50px;
+  border-radius: 25px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+  opacity: 0;
+  transform: translateY(100px);
+  transition: all 1s ease-out;
+}
+
+#special-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.special-message-title {
+  font-size: 2.5rem;
+  color: #ff4270;
+  font-family: 'Pacifico', cursive;
+  margin-bottom: 20px;
+}
+
+.message-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: nowrap;
+}
+
+.message-text {
+  width: 150%; /* Takes up most of the left side */
+  max-width: 900px; /* Optional: Set max-width for the message */
+  font-size: 1.2rem;
+  color: #333;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.message-text p {
+  margin-bottom: 15px;
+}
+
+.message-image {
+  width: 35%; /* Image width on the right side */
+}
+
+.message-image img {
+  width: 400%;
+  height: 400%;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+#special-message button {
+  padding: 12px 30px;
+  background-color: #ff63a2;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#special-message button:hover {
+  background-color: #ff4270;
+}
+@media (max-width: 768px) {
+      .image-message-section {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .image-message-section img {
+        width: 80%;
+        max-width: 300px;
+      }
+
+      .message-text {
+        font-size: 1rem;
+      }
+
+      #introScreen h1 {
+        font-size: 2rem;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+
+      .carousel-images img {
+        width: 100vw;
+      }
+
+      .message-text {
+        font-size: 1rem;
+      }
+    }
+
+@media (max-width: 480px) {
+      .section,
+      .image-message-section {
+        padding: 20px;
+      }
+
+      .snowflake {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      #special-message {
+        padding: 20px;
+      }
+
+      .message-text {
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      .message-image img {
+        width: 120%;
+        object-fit: contain;
+      }
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Intro Screen -->
+  <div id="introScreen">
+    <video autoplay muted loop>
+      <source src="E:\command prompt\WhatsApp Video 2024-12-23 at 10.44.33 PM.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <img src="WhatsApp Image 2024-12-23 at 10.38.40 PM.jpeg" alt="Intro Image">
+    <h1>HELLLLLLOOO MOULYAAAAAA WASSSSUP HOW'S H_R_? </h1>
+    <button id="enterButton">If he's fine(obvs he will) plz click this to view the something that i hv tried to create</button>
+  </div>
+
+  <!-- Snowflakes Animation -->
+  <div class="snowflakes" aria-hidden="true">
+    <div class="snowflake" style="left: 20%;">❄</div>
+    <div class="snowflake" style="left: 40%;">❄</div>
+    <div class="snowflake" style="left: 60%;">❄</div>
+    <div class="snowflake" style="left: 80%;">❄</div>
+  </div>
+
+  <h1>First Of all Merry Christmas!!!!</h1>
+
+  <!-- Image and Message Section (Full Page) -->
+  <div class="image-message-section">
+    <img src="WhatsApp Image 2024-12-23 at 10.44.50 PM.jpeg" alt="Memory Image">
+    <div class="message">
+      <h2>Thanks for Making Life Less Boring (Barely)</h2>
+      <p>I just wanted to say thanks for always making life more fun! Your energy, sense of humor, and ability to turn any situation into a good time are honestly contagious. Hanging out with you always puts a smile on my face, and I’m so grateful for the good vibes you bring.
+
+        Keep being awesome – you make everything better!</p>
+    </div>
+  </div>
+
+  <!-- Message Section -->
+  <div class="section" id="message">
+    <div class="content">
+      <div class="message-text">
+        <h2>Never Thought I’d Get This Close to Someone… But Here We Are</h2>
+        <p>It’s been three months since we met, and I just have to say – I’ve never really clicked with someone like this before. It’s crazy how fast time’s flown, but also how comfortable and easy it feels to be around you. I’ve really enjoyed getting to know you and I’m glad we crossed paths.
+
+            Here’s to many more laughs and good times ahead!</p>
+      </div>
+      <div class="message-image">
+        <img src="WhatsApp Image 2024-12-23 at 10.45.32 PM.jpeg" alt="Memory Image 1">
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Video Section -->
+  <div class="video-section">
+    <video autoplay muted loop>
+      <source src="WhatsApp Image 2024-12-23 at 10.48.15 PM.jpeg" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+ <!-- Slideshow Section -->
+<div class="section" id="slideshow">
+    <div class="content">
+      <h2>You're basically the baby of the group, and somehow, we’re all okay with it.</h2>
+      <div class="carousel">
+        <div class="carousel-images">
+          <img src="WhatsApp Image 2024-12-24 at 12.11.09 AM.jpeg" alt="Memory 1" class="slide">
+          <img src="WhatsApp Image 2024-12-24 at 12.17.42 AM.jpeg" alt="Memory 2" class="slide">
+          <img src="WhatsApp Image 2024-12-24 at 12.12.05 AM.jpeg" alt="Memory 3" class="slide">
+          <img src="WhatsApp Image 2024-12-24 at 12.11.39 AM.jpeg" alt="Memory 4" class="slide">
+        </div>
+        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="next" onclick="moveSlide(1)">&#10095;</button>
+      </div>
+    </div>
+  </div>
+  
+
+ <!-- Special Message Section -->
+<div class="section" id="special-message">
+    <div class="content">
+      <h2 class="special-message-title">A Message From the Heart</h2>
+      <div class="message-container">
+        <div class="message-text">
+          <p>Dearest Moulya,</p>
+          <p>
+
+            I’ve been carrying a lot lately, and I want to be honest with you. The past few months have been some of the hardest I’ve ever faced, and I know it hasn’t been easy for you either. There have been moments when I haven’t treated you the way you deserve, and I feel terrible about it. Sometimes, I don’t even realize the impact of my actions, and it makes me feel awful. Please know that it's never about you – it's the storm inside me that I haven’t been able to fully explain.
+            
+            I’ve been through so much, from losing love to losing friends, and it’s taken a toll on me – physically, mentally, and emotionally. It’s been exhausting, and at times, I didn’t know how to cope. But even in the midst of all the pain, I’m truly thankful to have found you and the rest of the group. You ppl have been a constant source of light in my darkest moments, and that means more to me than I can put into words.
+            
+            I may not always express it well, but I value your friendship deeply, and I’m so grateful that you’ve been there, even when I wasn’t at my best. I hope you can see how much you truly mean to me.
+            
+            Thank you for being a part of my life. You’ve given me something to hold on to when everything felt like it was falling apart. With all my heart,
+            
+           <br> Abhishek
+            
+            </p>
+          
+        </div>
+        <div class="message-image">
+          <img src="It-is-a-wonderful-experience-being-with-you-my-friend.jpg.webp" alt="Heartfelt Image">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    <p>Seriously, I don’t even know why I made this webpage.</p>
+  </div>
+
+  <script>
+    // Function to hide intro screen and show the page content
+    document.getElementById("enterButton").addEventListener("click", function() {
+      document.getElementById("introScreen").style.opacity = "0"; // Fade out intro screen
+      setTimeout(function() {
+        document.getElementById("introScreen").style.display = "none"; // Hide intro screen after fade
+        checkVisibility(); // Trigger visibility of sections
+      }, 1000);
+    });
+
+    // Function to detect when the section comes into view
+    function checkVisibility() {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+          section.classList.add('visible');
+        }
+      });
+
+      const imageMessageSection = document.querySelector('.image-message-section');
+      const rect = imageMessageSection.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom >= 0) {
+        imageMessageSection.classList.add('visible');
+      }
+    }
+
+    // Call the checkVisibility function on scroll and load
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('load', checkVisibility);
+
+    // Slideshow functionality
+   // JavaScript to move slides
+let currentSlide = 0;
+
+function moveSlide(direction) {
+  const slides = document.querySelectorAll('.carousel-images img');
+  const totalSlides = slides.length;
+
+  // Move the current slide by the direction (prev or next)
+  currentSlide += direction;
+
+  // Loop back to first slide if at the end
+  if (currentSlide < 0) {
+    currentSlide = totalSlides - 1;
+  } 
+  // Loop back to last slide if at the start
+  if (currentSlide >= totalSlides) {
+    currentSlide = 0;
+  }
+
+  // Slide to the correct image
+  const offset = -currentSlide * 100; // Move by 100% per slide
+  document.querySelector('.carousel-images').style.transform = `translateX(${offset}%)`;
+}
+
+    // Confetti animation
+    function showConfetti() {
+      let confettiContainer = document.createElement('div');
+      confettiContainer.style.position = 'absolute';
+      confettiContainer.style.top = 0;
+      confettiContainer.style.left = 0;
+      confettiContainer.style.width = '100%';
+      confettiContainer.style.height = '100%';
+      confettiContainer.style.zIndex = 9999;
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 30; i++) {
+        let confettiPiece = document.createElement('div');
+        confettiPiece.style.position = 'absolute';
+        confettiPiece.style.width = '10px';
+        confettiPiece.style.height = '10px';
+        confettiPiece.style.backgroundColor = ['#ff63a2', '#ff9b7a', '#ff4270'][Math.floor(Math.random() * 3)];
+        confettiPiece.style.left = `${Math.random() * 100}%`;
+        confettiPiece.style.animation = 'confetti 1s ease-in-out';
+        confettiContainer.appendChild(confettiPiece);
+      }
+
+      setTimeout(() => {
+        document.body.removeChild(confettiContainer);
+      }, 5000);
+    }
+    function revealGift() {
+    // Add a fun confetti effect
+    showConfetti();
+
+    // Reveal the surprise by changing the content of the box
+    const box = document.querySelector('.content-box');
+    box.innerHTML = '<h3>Your special gift is here!</h3><img src="your-gift-image.jpg" alt="Gift Image" />';
+    
+    // Add some animation to reveal the box
+    document.querySelector('.box').classList.add('open');
+  }
+
+  // Confetti animation
+  function showConfetti() {
+    let confettiContainer = document.createElement('div');
+    confettiContainer.style.position = 'absolute';
+    confettiContainer.style.top = 0;
+    confettiContainer.style.left = 0;
+    confettiContainer.style.width = '100%';
+    confettiContainer.style.height = '100%';
+    confettiContainer.style.zIndex = 9999;
+    document.body.appendChild(confettiContainer);
+
+    for (let i = 0; i < 30; i++) {
+      let confettiPiece = document.createElement('div');
+      confettiPiece.style.position = 'absolute';
+      confettiPiece.style.width = '10px';
+      confettiPiece.style.height = '10px';
+      confettiPiece.style.backgroundColor = ['#ff63a2', '#ff9b7a', '#ff4270'][Math.floor(Math.random() * 3)];
+      confettiPiece.style.left = `${Math.random() * 100}%`;
+      confettiPiece.style.animation = 'confetti 1s ease-in-out';
+      confettiContainer.appendChild(confettiPiece);
+    }
+
+    setTimeout(() => {
+      document.body.removeChild(confettiContainer);
+    }, 5000);
+  }
+  </script>
+</body>
+</html>
